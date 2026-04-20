@@ -140,4 +140,247 @@ const ProfilePage = {
   }
 };
 
+// ===== PROFILE IMAGE UPLOAD EXTENSION =====
+
+document.addEventListener('DOMContentLoaded', () => {
+  const avatar = document.getElementById('profile-avatar-big');
+  if (!avatar) return;
+
+  let fileInput = document.getElementById('avatar-upload-input');
+  if (!fileInput) {
+    fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.id = 'avatar-upload-input';
+    fileInput.style.display = 'none';
+    document.body.appendChild(fileInput);
+  }
+
+  avatar.style.cursor = 'pointer';
+  avatar.title = 'คลิกเพื่อเปลี่ยนรูปโปรไฟล์';
+  avatar.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      showToast('กรุณาเลือกไฟล์รูปภาพเท่านั้น', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const imageData = e.target.result;
+      avatar.innerHTML = `<img src="${imageData}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+      const u = DB.getUserById(ProfilePage.user.id);
+      u.avatar = imageData;
+      DB.updateUser(u);
+      showToast('อัปโหลดรูปโปรไฟล์เรียบร้อย');
+    };
+    reader.readAsDataURL(file); // ย้ายเข้ามาอยู่ในฟังก์ชันเปลี่ยนไฟล์
+  });
+});
+
+// ===== PATCH: แสดงรูปตอน render =====
+(function () {
+  const originalRender = ProfilePage.renderProfile;
+
+  ProfilePage.renderProfile = function () {
+    originalRender.apply(this, arguments);
+
+    const avatarBig = document.getElementById('profile-avatar-big');
+    const u = this.user;
+
+    if (u.avatar && avatarBig) {
+      avatarBig.innerHTML = `<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+    }
+  };
+})();
+
+// ===== PROFILE IMAGE CROP EXTENSION =====
+
+let cropper;
+let cropModal;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const avatar = document.getElementById('profile-avatar-big');
+  if (!avatar) return;
+
+  cropModal = document.createElement('div');
+  cropModal.innerHTML = `
+    <div id="crop-overlay" style="
+      position:fixed; inset:0; background:rgba(0,0,0,.7);
+      display:flex; align-items:center; justify-content:center; z-index:9999;">
+      <div style="background:#fff;padding:16px;border-radius:12px;max-width:90%;">
+        <img id="crop-image" style="max-width:100%;max-height:60vh;">
+        <div style="margin-top:10px;text-align:right;">
+          <button id="crop-cancel">ยกเลิก</button>
+          <button id="crop-save" style="margin-left:8px;">บันทึก</button>
+        </div>
+      </div>
+    </div>
+  `;
+  cropModal.style.display = 'none';
+  document.body.appendChild(cropModal);
+
+  let fileInput = document.getElementById('avatar-upload-input');
+  if (!fileInput) {
+    fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.id = 'avatar-upload-input';
+    fileInput.style.display = 'none';
+    document.body.appendChild(fileInput);
+  }
+
+  avatar.onclick = () => fileInput.click();
+
+  fileInput.onchange = function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.getElementById('crop-image');
+      img.src = e.target.result;
+      cropModal.style.display = 'block';
+
+      if (cropper) cropper.destroy();
+      cropper = new Cropper(img, {
+        aspectRatio: 1,
+        viewMode: 1
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  document.addEventListener('click', e => {
+    if (e.target.id === 'crop-cancel') {
+      cropModal.style.display = 'none';
+      if (cropper) cropper.destroy();
+    }
+  });
+
+  document.addEventListener('click', e => {
+    if (e.target.id === 'crop-save') {
+      const canvas = cropper.getCroppedCanvas({
+        width: 300,
+        height: 300
+      });
+
+      const imageData = canvas.toDataURL('image/png');
+      const avatarBig = document.getElementById('profile-avatar-big');
+      avatarBig.innerHTML = `<img src="${imageData}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+
+      const u = DB.getUserById(ProfilePage.user.id);
+      u.avatar = imageData;
+      DB.updateUser(u);
+
+      cropModal.style.display = 'none';
+      cropper.destroy();
+      showToast('บันทึกรูปโปรไฟล์เรียบร้อย');
+    }
+  });
+});
+
+// ===== PROFILE BIO EXTENSION =====
+
+(function () {
+  document.addEventListener('DOMContentLoaded', () => {
+    const nameEl = document.getElementById('profile-name');
+    if (!nameEl) return;
+
+    const bioEl = document.createElement('div');
+    bioEl.id = 'profile-bio';
+    bioEl.style.marginTop = '6px';
+    bioEl.style.fontSize = '.9rem';
+    bioEl.style.color = 'var(--text2)';
+    nameEl.parentElement.appendChild(bioEl);
+
+    const editForm = document.getElementById('edit-form');
+    if (editForm) {
+      const textarea = document.createElement('textarea');
+      textarea.id = 'edit-bio';
+      textarea.placeholder = 'เขียนคำอธิบายตัวเอง...';
+      textarea.style.width = '100%';
+      textarea.style.marginTop = '8px';
+      textarea.style.padding = '8px';
+      textarea.style.borderRadius = '8px';
+      editForm.appendChild(textarea);
+    }
+  });
+
+  const oldRender = ProfilePage.renderProfile;
+  ProfilePage.renderProfile = function () {
+    oldRender.apply(this, arguments);
+    const bioEl = document.getElementById('profile-bio');
+    const editBio = document.getElementById('edit-bio');
+    const u = this.user;
+    if (bioEl) bioEl.textContent = u.bio || 'ยังไม่มีคำอธิบายตัวเอง';
+    if (editBio) editBio.value = u.bio || '';
+  };
+
+  const oldSave = ProfilePage.saveEdit;
+  ProfilePage.saveEdit = function () {
+    const bio = document.getElementById('edit-bio')?.value || '';
+    const u = DB.getUserById(this.user.id);
+    u.bio = bio;
+    DB.updateUser(u);
+    oldSave.apply(this, arguments);
+  };
+
+  // ===== SIMPLE ONLINE DOT =====
+  setTimeout(() => {
+    const avatar = document.getElementById('profile-avatar-big');
+    if (!avatar) return;
+    let dot = document.getElementById('online-status-dot');
+    if (!dot) {
+      dot = document.createElement('div');
+      dot.id = 'online-status-dot';
+      dot.style.position = 'absolute';
+      dot.style.bottom = '4px';
+      dot.style.right = '4px';
+      dot.style.width = '14px';
+      dot.style.height = '14px';
+      dot.style.background = '#3ba55d';
+      dot.style.borderRadius = '50%';
+      dot.style.border = '2px solid white';
+      dot.style.zIndex = '99';
+      avatar.style.position = 'relative';
+      avatar.appendChild(dot);
+    }
+  }, 500);
+})();
+
 document.addEventListener('DOMContentLoaded', () => ProfilePage.init());
+
+// ===== REMOVE PROFILE IMAGE BUTTON =====
+
+document.addEventListener('DOMContentLoaded', () => {
+  const avatar = document.getElementById('profile-avatar-big');
+  if (!avatar) return;
+
+  const btn = document.createElement('button');
+  btn.textContent = '🗑 ลบรูปโปรไฟล์';
+  btn.style.marginTop = '10px';
+  btn.style.padding = '6px 10px';
+  btn.style.border = 'none';
+  btn.style.borderRadius = '8px';
+  btn.style.cursor = 'pointer';
+  btn.style.fontSize = '0.85rem';
+  btn.style.background = '#ff4d4f';
+  btn.style.color = '#fff';
+
+  avatar.parentElement.appendChild(btn);
+
+  btn.onclick = () => {
+    if (!confirm('ต้องการลบรูปโปรไฟล์ใช่ไหม?')) return;
+    const u = DB.getUserById(ProfilePage.user.id);
+    delete u.avatar;
+    DB.updateUser(u);
+    ProfilePage.user = DB.getCurrentUser();
+    ProfilePage.renderProfile();
+    showToast('ลบรูปโปรไฟล์เรียบร้อย');
+  };
+});
