@@ -63,7 +63,15 @@
   transition: color .2s;
 }
 .admin-back-link:hover { color: var(--accent); }
-
+.btn-logout {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(240,111,111,0.1);
+  color: var(--red);
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: background .2s;
+}
 /* Admin Main */
 .admin-main { flex: 1; overflow: hidden; }
 
