@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LearnFlow — E-Learning Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body class="auth-page">
+
+  <!-- Animated Background -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Auth Container -->
+  <div class="auth-wrapper">
+    <div class="auth-brand">
+      <div class="brand-logo">
+        <svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="M13 20 L20 13 L27 20 L20 27 Z" fill="var(--accent)"/><circle cx="20" cy="20" r="4" fill="var(--bg)"/></svg>
+      </div>
+      <span class="brand-name">LearnFlow</span>
+    </div>
+
+    <div class="auth-card">
+      <!-- Tab Toggle -->
+      <div class="auth-tabs">
+        <button class="tab-btn active" data-tab="login">เข้าสู่ระบบ</button>
+        <button class="tab-btn" data-tab="register">สมัครสมาชิก</button>
+      </div>
+
+      <!-- Login Form -->
+      <div class="tab-content active" id="tab-login">
+        <h2>ยินดีต้อนรับกลับ</h2>
+        <p class="auth-sub">เรียนรู้ต่อจากที่ค้างไว้</p>
+        <div class="form-group">
+          <label>อีเมล</label>
+          <input type="email" id="login-email" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label>รหัสผ่าน</label>
+          <input type="password" id="login-password" placeholder="••••••••" />
+        </div>
+        <div class="form-error" id="login-error"></div>
+        <button class="btn-primary" onclick="Auth.login()">เข้าสู่ระบบ</button>
+        <div class="auth-hint">
+          ทดสอบ Admin: <code>admin@learnflow.com</code> / <code>admin123</code>
+        </div>
+      </div>
+
+      <!-- Register Form -->
+      <div class="tab-content" id="tab-register">
+        <h2>สร้างบัญชีใหม่</h2>
+        <p class="auth-sub">เริ่มต้นการเรียนรู้วันนี้</p>
+        <div class="form-group">
+          <label>ชื่อ-นามสกุล</label>
+          <input type="text" id="reg-name" placeholder="ชื่อของคุณ" />
+        </div>
+        <div class="form-group">
+          <label>อีเมล</label>
+          <input type="email" id="reg-email" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label>รหัสผ่าน</label>
+          <input type="password" id="reg-password" placeholder="อย่างน้อย 6 ตัวอักษร" />
+        </div>
+        <div class="form-error" id="reg-error"></div>
+        <button class="btn-primary" onclick="Auth.register()">สมัครสมาชิก</button>
+      </div>
+    </div>
+
+    <p class="auth-footer">LearnFlow © 2025 — เรียนรู้ไม่มีขีดจำกัด</p>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/linkedlist.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/router.js"></script>
+</body>
+</html>
