@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LearnFlow — เรียนคอร์ส</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/learn.css" />
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <svg width="32" height="32" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="M13 20 L20 13 L27 20 L20 27 Z" fill="var(--accent)"/><circle cx="20" cy="20" r="4" fill="var(--bg)"/></svg>
+      <span>LearnFlow</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">⊞</span> หน้าหลัก</a>
+      <a href="courses.html" class="nav-item"><span class="nav-icon">◈</span> คอร์สทั้งหมด</a>
+      <a href="profile.html" class="nav-item"><span class="nav-icon">◉</span> โปรไฟล์</a>
+      <a href="create-course.html" class="nav-item"><span class="nav-icon">⊕</span> สร้างคอร์ส</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-mini" id="user-mini"></div>
+      <button class="btn-logout" onclick="Auth.logout()">ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-header">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <a href="courses.html" class="back-btn">← กลับ</a>
+      <div class="header-actions">
+        <a href="profile.html" class="avatar-btn" id="header-avatar"></a>
+      </div>
+    </header>
+
+    <!-- Course Hero -->
+    <div class="course-hero" id="course-hero">
+      <div class="course-hero-content">
+        <div class="course-category-tag" id="hero-cat"></div>
+        <h1 id="hero-title"></h1>
+        <p id="hero-desc"></p>
+        <div class="hero-meta">
+          <span id="hero-author"></span>
+          <span class="dot">·</span>
+          <span id="hero-lessons"></span> บทเรียน
+          <span class="dot">·</span>
+          <span id="hero-quizzes"></span> แบบทดสอบ
+        </div>
+        <div class="hero-actions">
+          <button class="btn-like" id="like-btn" onclick="LearnPage.toggleLike()">
+            <span id="like-icon">♡</span> <span id="like-count">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-section">
+      <div class="progress-label">
+        ความคืบหน้า <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Two Column: Content List + Viewer -->
+    <div class="learn-layout">
+      <!-- Linked List Navigator -->
+      <div class="lesson-nav" id="lesson-nav">
+        <div class="nav-title">เนื้อหาคอร์ส</div>
+        <div class="lesson-list" id="lesson-list"></div>
+      </div>
+
+      <!-- Content Viewer -->
+      <div class="content-viewer" id="content-viewer">
+        <div class="viewer-placeholder">
+          <div style="font-size:3rem; opacity:.3">◈</div>
+          <p>เลือกบทเรียนเพื่อเริ่มต้น</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Quiz Modal -->
+  <div class="modal-overlay hidden" id="quiz-modal">
+    <div class="modal-box quiz-box">
+      <div class="quiz-header">
+        <div class="quiz-title" id="quiz-title">แบบทดสอบ</div>
+        <div class="quiz-progress-text" id="quiz-prog-text">1 / 1</div>
+      </div>
+      <div class="quiz-body" id="quiz-body"></div>
+      <div class="quiz-footer">
+        <button class="btn-primary" id="quiz-next-btn" onclick="LearnPage.quizNext()">ถัดไป</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Modal -->
+  <div class="modal-overlay hidden" id="result-modal">
+    <div class="modal-box">
+      <div class="result-icon" id="result-icon"></div>
+      <h2 id="result-title"></h2>
+      <p id="result-score"></p>
+      <button class="btn-primary" onclick="LearnPage.closeResult()">ปิด</button>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/linkedlist.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/learn.js"></script>
+</body>
+</html>

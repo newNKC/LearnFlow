@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LearnFlow — คอร์สทั้งหมด</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <svg width="32" height="32" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="M13 20 L20 13 L27 20 L20 27 Z" fill="var(--accent)"/><circle cx="20" cy="20" r="4" fill="var(--bg)"/></svg>
+      <span>LearnFlow</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">⊞</span> หน้าหลัก</a>
+      <a href="courses.html" class="nav-item active"><span class="nav-icon">◈</span> คอร์สทั้งหมด</a>
+      <a href="profile.html" class="nav-item"><span class="nav-icon">◉</span> โปรไฟล์</a>
+      <a href="create-course.html" class="nav-item"><span class="nav-icon">⊕</span> สร้างคอร์ส</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-mini" id="user-mini"></div>
+      <button class="btn-logout" onclick="Auth.logout()">ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-header">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div class="header-greeting">คอร์สทั้งหมด</div>
+      <div class="header-actions">
+        <a href="profile.html" class="avatar-btn" id="header-avatar"></a>
+      </div>
+    </header>
+
+    <!-- Search & Filter Bar -->
+    <div class="filter-bar">
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="search-input" placeholder="ค้นหาคอร์ส..." oninput="CoursePage.search(this.value)" />
+      </div>
+      <div class="filter-controls">
+        <select id="cat-filter" onchange="CoursePage.filter()" class="select-styled">
+          <option value="all">ทุกหมวดหมู่</option>
+        </select>
+        <select id="sort-select" onchange="CoursePage.sort()" class="select-styled">
+          <option value="popular">ยอดนิยม</option>
+          <option value="newest">ใหม่ล่าสุด</option>
+          <option value="az">A-Z</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Category Pills -->
+    <div class="cat-pills" id="cat-pills"></div>
+
+    <!-- Courses Grid -->
+    <div class="courses-grid" id="courses-grid"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state hidden" id="empty-state">
+      <div class="empty-icon">◇</div>
+      <p>ไม่พบคอร์สที่ค้นหา</p>
+      <a href="create-course.html" class="btn-primary">สร้างคอร์สใหม่</a>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/linkedlist.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/courses.js"></script>
+</body>
+</html>

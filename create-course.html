@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LearnFlow — สร้างคอร์ส</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/create.css" />
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <svg width="32" height="32" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="M13 20 L20 13 L27 20 L20 27 Z" fill="var(--accent)"/><circle cx="20" cy="20" r="4" fill="var(--bg)"/></svg>
+      <span>LearnFlow</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">⊞</span> หน้าหลัก</a>
+      <a href="courses.html" class="nav-item"><span class="nav-icon">◈</span> คอร์สทั้งหมด</a>
+      <a href="profile.html" class="nav-item"><span class="nav-icon">◉</span> โปรไฟล์</a>
+      <a href="create-course.html" class="nav-item active"><span class="nav-icon">⊕</span> สร้างคอร์ส</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-mini" id="user-mini"></div>
+      <button class="btn-logout" onclick="Auth.logout()">ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-header">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div class="header-greeting">สร้างคอร์สใหม่</div>
+      <div class="header-actions">
+        <a href="profile.html" class="avatar-btn" id="header-avatar"></a>
+      </div>
+    </header>
+
+    <div class="create-layout">
+      <!-- Step 1: Course Info -->
+      <div class="create-card">
+        <div class="create-step-label">ขั้นตอนที่ 1</div>
+        <h2>ข้อมูลคอร์ส</h2>
+        <div class="form-group">
+          <label>ชื่อคอร์ส *</label>
+          <input type="text" id="c-title" placeholder="เช่น: Python สำหรับผู้เริ่มต้น" />
+        </div>
+        <div class="form-group">
+          <label>คำอธิบาย *</label>
+          <textarea id="c-desc" placeholder="อธิบายเนื้อหาคอร์สนี้..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>หมวดหมู่ *</label>
+          <div class="cat-input-row">
+            <select id="c-cat" class="select-styled">
+              <option value="">— เลือกหมวดหมู่ —</option>
+            </select>
+            <button class="btn-ghost" onclick="CreatePage.showNewCat()">+ หมวดใหม่</button>
+          </div>
+          <div class="new-cat-input hidden" id="new-cat-input">
+            <input type="text" id="new-cat-name" placeholder="ชื่อหมวดหมู่ใหม่" />
+            <button class="btn-accent-sm" onclick="CreatePage.addNewCat()">เพิ่ม</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>สีธีม</label>
+          <div class="color-picker-row" id="color-picker-row"></div>
+        </div>
+      </div>
+
+      <!-- Step 2: Lessons (LinkedList) -->
+      <div class="create-card">
+        <div class="create-step-label">ขั้นตอนที่ 2</div>
+        <h2>บทเรียน <span class="badge" id="lesson-count">0</span></h2>
+        <p class="hint-text">บทเรียนจัดเก็บด้วยโครงสร้าง Linked List — สามารถเพิ่ม ลบ และเรียงลำดับได้</p>
+        
+        <div class="lesson-builder" id="lesson-builder">
+          <div class="empty-lessons">ยังไม่มีบทเรียน — เพิ่มบทเรียนแรก</div>
+        </div>
+
+        <button class="btn-add-lesson" onclick="CreatePage.addLesson()">⊕ เพิ่มบทเรียน</button>
+      </div>
+
+      <!-- Step 3: Quiz -->
+      <div class="create-card">
+        <div class="create-step-label">ขั้นตอนที่ 3</div>
+        <h2>แบบทดสอบ <span class="badge" id="quiz-count">0</span></h2>
+        <div class="quiz-builder" id="quiz-builder">
+          <div class="empty-lessons">ยังไม่มีคำถาม</div>
+        </div>
+        <button class="btn-add-lesson" onclick="CreatePage.addQuiz()">⊕ เพิ่มคำถาม</button>
+      </div>
+
+      <!-- Publish -->
+      <div class="create-actions">
+        <button class="btn-ghost" onclick="history.back()">ยกเลิก</button>
+        <button class="btn-primary btn-publish" onclick="CreatePage.publish()">🚀 เผยแพร่คอร์ส</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lesson Editor Modal -->
+  <div class="modal-overlay hidden" id="lesson-modal">
+    <div class="modal-box lesson-modal-box">
+      <h3 id="lesson-modal-title">แก้ไขบทเรียน</h3>
+      <div class="form-group">
+        <label>หัวข้อบทเรียน</label>
+        <input type="text" id="lm-title" placeholder="ชื่อบทเรียน" />
+      </div>
+      <div class="form-group">
+        <label>เนื้อหา (รองรับ Markdown พื้นฐาน)</label>
+        <textarea id="lm-content" rows="8" placeholder="เขียนเนื้อหาที่นี่...&#10;&#10;## หัวข้อ&#10;**ตัวหนา** *ตัวเอียง*&#10;- รายการ"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="CreatePage.closeLessonModal()">ยกเลิก</button>
+        <button class="btn-primary" onclick="CreatePage.saveLessonModal()">บันทึก</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz Editor Modal -->
+  <div class="modal-overlay hidden" id="quiz-editor-modal">
+    <div class="modal-box quiz-editor-box">
+      <h3>แก้ไขคำถาม</h3>
+      <div class="form-group">
+        <label>คำถาม</label>
+        <input type="text" id="qm-question" placeholder="คำถาม..." />
+      </div>
+      <div class="form-group">
+        <label>ตัวเลือก (คลิก ✓ เพื่อเลือกคำตอบที่ถูก)</label>
+        <div id="qm-options"></div>
+        <button class="btn-ghost btn-sm" onclick="CreatePage.addOption()">+ เพิ่มตัวเลือก</button>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="CreatePage.closeQuizModal()">ยกเลิก</button>
+        <button class="btn-primary" onclick="CreatePage.saveQuizModal()">บันทึก</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/linkedlist.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/create-course.js"></script>
+</body>
+</html>

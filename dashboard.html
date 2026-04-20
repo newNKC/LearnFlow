@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LearnFlow — หน้าหลัก</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <svg width="32" height="32" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="M13 20 L20 13 L27 20 L20 27 Z" fill="var(--accent)"/><circle cx="20" cy="20" r="4" fill="var(--bg)"/></svg>
+      <span>LearnFlow</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item active"><span class="nav-icon">⊞</span> หน้าหลัก</a>
+      <a href="courses.html" class="nav-item"><span class="nav-icon">◈</span> คอร์สทั้งหมด</a>
+      <a href="profile.html" class="nav-item"><span class="nav-icon">◉</span> โปรไฟล์</a>
+      <a href="create-course.html" class="nav-item"><span class="nav-icon">⊕</span> สร้างคอร์ส</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-mini" id="user-mini"></div>
+      <button class="btn-logout" onclick="Auth.logout()">ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="top-header">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div class="header-greeting" id="header-greeting">สวัสดี!</div>
+      <div class="header-actions">
+        <a href="profile.html" class="avatar-btn" id="header-avatar"></a>
+      </div>
+    </header>
+
+    <!-- Hero Stats -->
+    <section class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-courses">0</div>
+        <div class="stat-label">คอร์สที่เรียน</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-progress">0%</div>
+        <div class="stat-label">ความคืบหน้าเฉลี่ย</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-created">0</div>
+        <div class="stat-label">คอร์สที่สร้าง</div>
+      </div>
+    </section>
+
+    <!-- Continue Learning -->
+    <section class="section-block">
+      <div class="section-header">
+        <h2>เรียนต่อ</h2>
+        <a href="courses.html" class="see-all">ดูทั้งหมด →</a>
+      </div>
+      <div class="course-row" id="continue-learning"></div>
+    </section>
+
+    <!-- Recommended (most liked) -->
+    <section class="section-block">
+      <div class="section-header">
+        <h2>🔥 แนะนำ — ยอดนิยม</h2>
+      </div>
+      <div class="course-row" id="recommended-courses"></div>
+    </section>
+
+    <!-- Categories -->
+    <section class="section-block">
+      <div class="section-header">
+        <h2>หมวดหมู่</h2>
+      </div>
+      <div class="categories-grid" id="categories-grid"></div>
+    </section>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/linkedlist.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LearnFlow — โปรไฟล์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <svg width="32" height="32" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="M13 20 L20 13 L27 20 L20 27 Z" fill="var(--accent)"/><circle cx="20" cy="20" r="4" fill="var(--bg)"/></svg>
+      <span>LearnFlow</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">⊞</span> หน้าหลัก</a>
+      <a href="courses.html" class="nav-item"><span class="nav-icon">◈</span> คอร์สทั้งหมด</a>
+      <a href="profile.html" class="nav-item active"><span class="nav-icon">◉</span> โปรไฟล์</a>
+      <a href="create-course.html" class="nav-item"><span class="nav-icon">⊕</span> สร้างคอร์ส</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-mini" id="user-mini"></div>
+      <button class="btn-logout" onclick="Auth.logout()">ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-header">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div class="header-greeting">โปรไฟล์ของฉัน</div>
+      <div class="header-actions">
+        <a href="profile.html" class="avatar-btn" id="header-avatar"></a>
+      </div>
+    </header>
+
+    <!-- Profile Header -->
+    <div class="profile-hero">
+      <div class="profile-avatar-big" id="profile-avatar-big"></div>
+      <div class="profile-info">
+        <h1 id="profile-name"></h1>
+        <p id="profile-email"></p>
+        <span class="role-badge" id="profile-role"></span>
+      </div>
+      <button class="btn-edit-profile" onclick="ProfilePage.toggleEdit()">✎ แก้ไขโปรไฟล์</button>
+    </div>
+
+    <!-- Edit Form (hidden by default) -->
+    <div class="edit-form-card hidden" id="edit-form">
+      <h3>แก้ไขข้อมูลส่วนตัว</h3>
+      <div class="form-group">
+        <label>ชื่อ-นามสกุล</label>
+        <input type="text" id="edit-name" />
+      </div>
+      <div class="form-group">
+        <label>รหัสผ่านใหม่ (เว้นว่างหากไม่ต้องการเปลี่ยน)</label>
+        <input type="password" id="edit-password" placeholder="••••••••" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="ProfilePage.toggleEdit()">ยกเลิก</button>
+        <button class="btn-primary" onclick="ProfilePage.saveEdit()">บันทึก</button>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="profile-stats-row">
+      <div class="p-stat"><span class="p-stat-num" id="ps-enrolled">0</span><span class="p-stat-lbl">กำลังเรียน</span></div>
+      <div class="p-stat"><span class="p-stat-num" id="ps-completed">0</span><span class="p-stat-lbl">เสร็จสมบูรณ์</span></div>
+      <div class="p-stat"><span class="p-stat-num" id="ps-created">0</span><span class="p-stat-lbl">คอร์สที่สร้าง</span></div>
+      <div class="p-stat"><span class="p-stat-num" id="ps-avg">0%</span><span class="p-stat-lbl">ความคืบหน้าเฉลี่ย</span></div>
+    </div>
+
+    <!-- Learning History -->
+    <section class="section-block">
+      <h2>ประวัติการเรียน</h2>
+      <div class="history-list" id="history-list"></div>
+    </section>
+
+    <!-- Created Courses -->
+    <section class="section-block">
+      <h2>คอร์สที่ฉันสร้าง</h2>
+      <div class="course-row" id="my-courses"></div>
+    </section>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/linkedlist.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>
