@@ -103,31 +103,6 @@ class LessonLinkedList {
     return node;
   }
 
-  // Insert after a given id
-  insertAfter(afterId, data) {
-    const afterNode = this.nodes.get(afterId);
-    if (!afterNode) return this.append(data);
-
-    const node = new LessonNode({
-      id: data.id || `l_${Date.now()}`,
-      title: data.title,
-      content: data.content,
-      next: afterNode.next,
-      prev: afterId
-    });
-    this.nodes.set(node.id, node);
-
-    if (afterNode.next) {
-      const nextNode = this.nodes.get(afterNode.next);
-      if (nextNode) nextNode.prev = node.id;
-    } else {
-      this.tail = node.id;
-    }
-    afterNode.next = node.id;
-    this.size++;
-    return node;
-  }
-
   // Remove node by id
   remove(id) {
     const node = this.nodes.get(id);
@@ -155,37 +130,46 @@ class LessonLinkedList {
   // Move node up (swap with prev)
   moveUp(id) {
     const node = this.nodes.get(id);
-    if (!node || !node.prev) return false;
+    if (!node || !node.prev) return false; // อยู่บนสุดแล้ว หรือไม่มี
+
     const prevNode = this.nodes.get(node.prev);
-    this._swapNodes(prevNode.id, node.id);
+    if (!prevNode) return false;
+
+    const prevPrevNode = prevNode.prev ? this.nodes.get(prevNode.prev) : null;
+    const nextNode = node.next ? this.nodes.get(node.next) : null;
+
+
+    if (prevPrevNode) {
+      prevPrevNode.next = id;
+    } else {
+      this.head = id; // ขึ้นไปเป็น head ใหม่
+    }
+
+    if (nextNode) {
+      nextNode.prev = prevNode.id;
+    } else {
+      this.tail = prevNode.id; // ถ้า node อยู่ตัวสุดท้าย prevNode จะกลายเป็น tail
+    }
+
+    // สลับ pointers ระหว่าง 2 nodes
+    node.prev = prevNode.prev;
+    node.next = prevNode.id;
+
+    prevNode.prev = id;
+    prevNode.next = nextNode ? nextNode.id : null;
+
     return true;
   }
 
-  // Move node down (swap with next)
+  // Move node down (swap with next) 
   moveDown(id) {
     const node = this.nodes.get(id);
-    if (!node || !node.next) return false;
-    const nextNode = this.nodes.get(node.next);
-    this._swapNodes(node.id, nextNode.id);
-    return true;
+    if (!node || !node.next) return false; // อยู่ล่างสุดแล้ว หรือไม่มี
+
+    // การเลื่อนลง = เอา next node ขึ้นมาแทน (เรียก moveUp ของ next)
+    return this.moveUp(node.next);
   }
 
-  _swapNodes(aId, bId) {
-    const a = this.nodes.get(aId);
-    const b = this.nodes.get(bId);
-    if (!a || !b) return;
-
-    // Swap titles and content only (keep structural links intact then rebuild)
-    const tmpTitle = a.title; a.title = b.title; b.title = tmpTitle;
-    const tmpContent = a.content; a.content = b.content; b.content = tmpContent;
-    const tmpId = a.id; a.id = b.id; b.id = tmpId;
-
-    // Re-map
-    this.nodes.delete(aId);
-    this.nodes.delete(bId);
-    this.nodes.set(a.id, a);
-    this.nodes.set(b.id, b);
-  }
 
   // Update node content
   update(id, data) {
@@ -194,20 +178,6 @@ class LessonLinkedList {
     if (data.title !== undefined) node.title = data.title;
     if (data.content !== undefined) node.content = data.content;
     return true;
-  }
-
-  // Get index of node (0-based)
-  indexOf(id) {
-    let idx = 0;
-    let current = this.head;
-    while (current) {
-      if (current === id) return idx;
-      const node = this.nodes.get(current);
-      if (!node) break;
-      current = node.next;
-      idx++;
-    }
-    return -1;
   }
 
   // Get next node
