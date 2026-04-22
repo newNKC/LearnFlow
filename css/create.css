@@ -54,7 +54,37 @@
   transition: all .2s;
 }
 .color-swatch.selected { border-color: var(--text); transform: scale(1.15); }
+/*emoji picker*/
+.emoji-picker-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
 
+.emoji-btn {
+  width: 40px;
+  height: 40px;
+  font-size: 1.3rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: var(--bg2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.emoji-btn:hover {
+  border-color: var(--accent);
+  background: var(--bg3);
+}
+
+.emoji-btn.selected {
+  border-color: var(--accent);
+  background: var(--accent);
+}
 /* Hint text */
 .hint-text { font-size: 0.82rem; color: var(--text3); margin-bottom: 16px; margin-top: -10px; }
 
