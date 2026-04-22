@@ -37,7 +37,7 @@ const CreatePage = {
       row.appendChild(sw);
     });
   },
-    buildEmojiPicker() {
+  buildEmojiPicker() {
     const row = document.getElementById('emoji-picker-row');
     if (!row) return;
     THEME_EMOJIS.forEach(emoji => {
