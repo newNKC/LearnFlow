@@ -17,6 +17,7 @@ const CreatePage = {
     if (!this.user) return;
     this.lessonList = new LessonLinkedList();
     this.buildColorPicker();
+    this.buildEmojiPicker();
     this.buildCatSelect();
   },
 
@@ -34,6 +35,21 @@ const CreatePage = {
         sw.classList.add('selected');
       };
       row.appendChild(sw);
+    });
+  },
+    buildEmojiPicker() {
+    const row = document.getElementById('emoji-picker-row');
+    if (!row) return;
+    THEME_EMOJIS.forEach(emoji => {
+      const btn = document.createElement('button');
+      btn.className = 'emoji-btn' + (emoji === this.selectedEmoji ? ' selected' : '');
+      btn.textContent = emoji;
+      btn.onclick = () => {
+        this.selectedEmoji = emoji;
+        row.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      };
+      row.appendChild(btn);
     });
   },
 
