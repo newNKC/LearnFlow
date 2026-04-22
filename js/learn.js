@@ -248,6 +248,10 @@ const LearnPage = {
 
   closeResult() {
     document.getElementById('result-modal')?.classList.add('hidden');
+        // fix highlight is still on quiz after closed
+    if (this.currentLessonId) {
+    this.openLesson(this.currentLessonId);
+  }
   }
 };
 
