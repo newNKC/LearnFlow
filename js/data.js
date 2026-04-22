@@ -122,27 +122,27 @@ const DB = {
       },
       {
         id: 'c_004',
-        title: 'Python สำหรับผู้เริ่มต้น',
-        description: 'เรียนเขียนโปรแกรม Python ตั้งแต่ศูนย์ ตัวแปร เงื่อนไข ลูป และฟังก์ชัน',
+        title: 'JavaScript สำหรับผู้เริ่มต้น',
+        description: 'เรียนเขียนโปรแกรม JavaScript ตั้งแต่ศูนย์ ตัวแปร เงื่อนไข ลูป และฟังก์ชัน',
         categoryId: 'cat_prog',
         authorId: 'u_admin',
         authorName: 'Admin LearnFlow',
         likes: 51,
         likedBy: [],
         color: '#a594f9',
-        emoji: '🐍',
+        emoji: '🟨',
         createdAt: Date.now() - 86400000 * 2,
         lessons: [
-          { id: 'l_004_1', title: 'Hello World และตัวแปร', content: '## Hello World\n\nโปรแกรมแรกของทุกคน:\n\n```python\nprint("Hello, World!")\n```\n\n## ตัวแปร (Variables)\n\nตัวแปรคือที่เก็บข้อมูล:\n\n```python\nname = "สมชาย"\nage = 25\nheight = 175.5\nprint(name, age)\n```\n\n**ชนิดข้อมูล:**\n- `str` — ข้อความ\n- `int` — จำนวนเต็ม\n- `float` — ทศนิยม\n- `bool` — True/False', next: 'l_004_2', prev: null },
-          { id: 'l_004_2', title: 'เงื่อนไข if-else', content: '## เงื่อนไข (Conditions)\n\n```python\nage = 18\n\nif age >= 18:\n    print("เป็นผู้ใหญ่")\nelif age >= 13:\n    print("เป็นวัยรุ่น")\nelse:\n    print("เป็นเด็ก")\n```\n\n**ตัวดำเนินการเปรียบเทียบ:**\n- `==` เท่ากับ\n- `!=` ไม่เท่ากับ\n- `>` มากกว่า\n- `<` น้อยกว่า\n- `>=` มากกว่าหรือเท่ากับ', next: 'l_004_3', prev: 'l_004_1' },
-          { id: 'l_004_3', title: 'ลูป for และ while', content: '## ลูป (Loop)\n\n**for loop:**\n```python\nfor i in range(5):\n    print(i)  # 0,1,2,3,4\n\nfruits = ["apple","banana","cherry"]\nfor fruit in fruits:\n    print(fruit)\n```\n\n**while loop:**\n```python\ncount = 0\nwhile count < 3:\n    print("นับ:", count)\n    count += 1\n```', next: null, prev: 'l_004_2' }
+          { id: 'l_004_1', title: 'Hello World และตัวแปร', content: '## Hello World\n\nโปรแกรมแรกของทุกคน:\n\n```javascript\nconsole.log("Hello, World!");\n```\n\n## ตัวแปร (Variables)\n\nตัวแปรคือที่เก็บข้อมูล:\n\n```javascript\nlet name = "สมชาย";\nlet age = 25;\nlet height = 175.5;\nconsole.log(name, age);\n```\n\n**ชนิดข้อมูล:**\n- `string` — ข้อความ\n- `number` — จำนวน (ทั้งเต็มและทศนิยม)\n- `boolean` — true/false\n- `undefined` — ยังไม่มีค่า', next: 'l_004_2', prev: null },
+          { id: 'l_004_2', title: 'เงื่อนไข if-else', content: '## เงื่อนไข (Conditions)\n\n```javascript\nlet age = 18;\n\nif (age >= 18) {\n    console.log("เป็นผู้ใหญ่");\n} else if (age >= 13) {\n    console.log("เป็นวัยรุ่น");\n} else {\n    console.log("เป็นเด็ก");\n}\n```\n\n**ตัวดำเนินการเปรียบเทียบ:**\n- `===` เท่ากับ\n- `!==` ไม่เท่ากับ\n- `>` มากกว่า\n- `<` น้อยกว่า\n- `>=` มากกว่าหรือเท่ากับ', next: 'l_004_3', prev: 'l_004_1' },
+          { id: 'l_004_3', title: 'ลูป for และ while', content: '## ลูป (Loop)\n\n**for loop:**\n```javascript\nfor (let i = 0; i < 5; i++) {\n    console.log(i);  // 0,1,2,3,4\n}\n\nconst fruits = ["apple", "banana", "cherry"];\nfor (const fruit of fruits) {\n    console.log(fruit);\n}\n```\n\n**while loop:**\n```javascript\nlet count = 0;\nwhile (count < 3) {\n    console.log("นับ:", count);\n    count++;\n}\n```', next: null, prev: 'l_004_2' }
         ],
         quiz: [
-          { id: 'q_004_1', question: 'คำสั่งใดใช้พิมพ์ข้อความใน Python?', options: ['echo()','console.log()','print()','write()'], correct: 2 },
-          { id: 'q_004_2', question: 'ตัวแปรชนิด int เก็บข้อมูลประเภทใด?', options: ['ข้อความ','จำนวนเต็ม','ทศนิยม','ค่าจริง/เท็จ'], correct: 1 },
-          { id: 'q_004_3', question: 'range(5) ให้ค่าตั้งแต่อะไรถึงอะไร?', options: ['1 ถึง 5','0 ถึง 5','0 ถึง 4','1 ถึง 4'], correct: 2 },
+          { id: 'q_004_1', question: 'คำสั่งใดใช้พิมพ์ข้อความใน JavaScript?', options: ['echo()', 'print()', 'console.log()', 'write()'], correct: 2 },
+          { id: 'q_004_2', question: 'คีย์เวิร์ดใดใช้ประกาศตัวแปรใน JavaScript?', options: ['var เท่านั้น', 'let และ const', 'dim', 'int'], correct: 1 },
+          { id: 'q_004_3', question: 'for loop แบบใดใช้วนซ้ำใน array ได้ถูกต้อง?', options: ['for i in array', 'for (i of array)', 'for (const item of array)', 'foreach(array)'], correct: 2 },
         ]
-      }
+      },
     ];
     localStorage.setItem(this.COURSES_KEY, JSON.stringify(courses));
 
